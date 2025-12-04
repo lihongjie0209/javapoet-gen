@@ -10,7 +10,9 @@ out/
 
 # Gradle
 .gradle/
-gradle-wrapper.jar
+
+# IntelliJ Platform Plugin cache
+.intellijPlatform/
 
 # OS files
 .DS_Store
