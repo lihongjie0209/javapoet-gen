@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '1.17.2'
+}
+
+group = 'cn.lihongjie.javapoet'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    // Use from Maven local after running: mvn install -pl javapoet-gen-core
+    implementation 'cn.lihongjie.javapoet:javapoet-gen-core:1.0.0-SNAPSHOT'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+intellij {
+    version = '2024.1'
+    type = 'IC' // IntelliJ IDEA Community Edition
+    plugins = ['com.intellij.java']
+    updateSinceUntilBuild = false
+}
+
+tasks {
+    patchPluginXml {
+        sinceBuild = '241'
+        untilBuild = '252.*'
+    }
+    
+    buildSearchableOptions {
+        enabled = false
+    }
+    
+    runIde {
+        jvmArgs = ['-Xmx2g']
+    }
+}

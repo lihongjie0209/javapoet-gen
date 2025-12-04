@@ -1,0 +1,106 @@
+<idea-plugin>
+    <id>cn.lihongjie.javapoet.gen.idea</id>
+    <name>JavaPoet Generator</name>
+    <version>1.0.0</version>
+    <vendor email="support@example.com" url="https://github.com/lihongjie/javapoet-gen">JavaPoet Gen</vendor>
+
+    <description><![CDATA[
+    <p>Generate JavaPoet code from Java source files.</p>
+    <p>This plugin allows you to right-click on any Java file or class and generate equivalent JavaPoet API code.</p>
+    
+    <h3>Features:</h3>
+    <ul>
+        <li>Generate JavaPoet code from Java source files</li>
+        <li>Support for classes, interfaces, enums</li>
+        <li>Support for fields, methods, constructors</li>
+        <li>Support for annotations and generics</li>
+        <li>Copy generated code to clipboard or open in new editor</li>
+    </ul>
+    
+    <h3>Usage:</h3>
+    <ol>
+        <li>Right-click on a Java file in the Project view</li>
+        <li>Select "Generate JavaPoet Code"</li>
+        <li>Choose to copy to clipboard or open in new editor</li>
+    </ol>
+    ]]></description>
+
+    <change-notes><![CDATA[
+    <h3>1.0.0</h3>
+    <ul>
+        <li>Initial release</li>
+        <li>Support for generating JavaPoet code from Java source files</li>
+    </ul>
+    ]]></change-notes>
+
+    <!-- Compatible with IntelliJ IDEA 2024.1 and later -->
+    <idea-version since-build="241" until-build="252.*"/>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Tool window for showing generated code -->
+        <toolWindow id="JavaPoet Generator" 
+                    secondary="true" 
+                    anchor="bottom" 
+                    factoryClass="cn.lihongjie.javapoet.gen.idea.toolwindow.JavaPoetToolWindowFactory"
+                    icon="/icons/javapoet.svg"/>
+        
+        <!-- Notification group -->
+        <notificationGroup id="JavaPoet Generator" 
+                          displayType="BALLOON"/>
+    </extensions>
+
+    <actions>
+        <!-- Add action to editor popup menu -->
+        <action id="JavaPoetGen.GenerateFromEditor"
+                class="cn.lihongjie.javapoet.gen.idea.action.GenerateJavaPoetAction"
+                text="Generate JavaPoet Code"
+                description="Generate JavaPoet code from this Java file"
+                icon="/icons/javapoet.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
+        <!-- Add action to project view popup menu -->
+        <action id="JavaPoetGen.GenerateFromProjectView"
+                class="cn.lihongjie.javapoet.gen.idea.action.GenerateJavaPoetAction"
+                text="Generate JavaPoet Code"
+                description="Generate JavaPoet code from selected Java file(s)"
+                icon="/icons/javapoet.svg">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <!-- Add action to Generate menu (Alt+Insert) -->
+        <action id="JavaPoetGen.GenerateFromGenerateMenu"
+                class="cn.lihongjie.javapoet.gen.idea.action.GenerateJavaPoetAction"
+                text="JavaPoet Code"
+                description="Generate JavaPoet code from current Java file"
+                icon="/icons/javapoet.svg">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+
+        <!-- Add action to Code menu -->
+        <group id="JavaPoetGen.Menu" text="JavaPoet Generator" popup="true" icon="/icons/javapoet.svg">
+            <add-to-group group-id="CodeMenu" anchor="last"/>
+            
+            <action id="JavaPoetGen.GenerateAndCopy"
+                    class="cn.lihongjie.javapoet.gen.idea.action.GenerateAndCopyAction"
+                    text="Generate and Copy to Clipboard"
+                    description="Generate JavaPoet code and copy to clipboard"
+                    icon="/icons/copy.svg"/>
+            
+            <action id="JavaPoetGen.GenerateAndOpen"
+                    class="cn.lihongjie.javapoet.gen.idea.action.GenerateAndOpenAction"
+                    text="Generate and Open in Editor"
+                    description="Generate JavaPoet code and open in new editor tab"
+                    icon="/icons/open.svg"/>
+            
+            <action id="JavaPoetGen.GenerateToToolWindow"
+                    class="cn.lihongjie.javapoet.gen.idea.action.GenerateToToolWindowAction"
+                    text="Generate to Tool Window"
+                    description="Generate JavaPoet code and show in tool window"
+                    icon="/icons/toolwindow.svg"/>
+        </group>
+    </actions>
+</idea-plugin>

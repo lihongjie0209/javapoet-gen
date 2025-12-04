@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'javapoet-gen-idea-plugin'
+
+// Include core module if building standalone
+// includeBuild('../javapoet-gen-core')

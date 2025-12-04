@@ -1,0 +1,68 @@
+name: Release IDEA Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      
+      - name: Build and install core module
+        run: mvn install -DskipTests -pl javapoet-gen-core -am
+      
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+      
+      - name: Build IDEA Plugin
+        working-directory: javapoet-gen-idea-plugin
+        run: ./gradlew buildPlugin
+      
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+      - name: Rename plugin artifact
+        working-directory: javapoet-gen-idea-plugin/build/distributions
+        run: |
+          PLUGIN_FILE=$(ls *.zip | head -1)
+          mv "$PLUGIN_FILE" "javapoet-gen-idea-plugin-${{ steps.get_version.outputs.VERSION }}.zip"
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## JavaPoet Generator ${{ steps.get_version.outputs.VERSION }}
+            
+            ### IDEA Plugin Installation
+            1. Download `javapoet-gen-idea-plugin-${{ steps.get_version.outputs.VERSION }}.zip`
+            2. Open IntelliJ IDEA → Settings → Plugins
+            3. Click ⚙️ → Install Plugin from Disk
+            4. Select the downloaded ZIP file
+            5. Restart IDEA
+            
+            ### Usage
+            - Right-click on a Java file → Generate → Generate JavaPoet Code
+            - Or use the context menu in the editor
+            
+            ### Requirements
+            - IntelliJ IDEA 2024.1 or later
+          files: |
+            javapoet-gen-idea-plugin/build/distributions/javapoet-gen-idea-plugin-${{ steps.get_version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

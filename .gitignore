@@ -1,0 +1,35 @@
+# Build output
+target/
+build/
+out/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# Gradle
+.gradle/
+gradle-wrapper.jar
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Package files
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven wrapper
+.mvn/
+
+# Local configuration
+local.properties
