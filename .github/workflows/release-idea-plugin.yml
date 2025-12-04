@@ -28,7 +28,9 @@ jobs:
       
       - name: Build IDEA Plugin
         working-directory: javapoet-gen-idea-plugin
-        run: ./gradlew buildPlugin
+        run: |
+          chmod +x ./gradlew
+          ./gradlew buildPlugin
       
       - name: Get version from tag
         id: get_version
